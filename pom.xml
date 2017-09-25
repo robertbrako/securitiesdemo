@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.rmbcorp</groupId>
-    <artifactId>law</artifactId>
+    <artifactId>securitiesdemo</artifactId>
     <version>0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
@@ -13,54 +13,94 @@
         <java.version>1.8</java.version>
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.source>1.8</maven.compiler.source>
-        <start-class>com.rmbcorp.law.Application</start-class>
-        <nexus.url>http://192.168.1.190</nexus.url>
-        <nexus.port>8081</nexus.port>
-        <nexus-staging-maven-plugin.version>1.6.7</nexus-staging-maven-plugin.version>
+        <nexus.url>http://nexus.rmbcorporate.com</nexus.url>
     </properties>
 
     <dependencies>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot</artifactId>
-            <version>1.5.7.RELEASE</version>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>4.3.11.RELEASE</version>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-            <version>1.4.2.RELEASE</version>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>2.8.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.8.4</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
+
     <build>
         <plugins>
             <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>1.5.7.RELEASE</version>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.4</version>
                 <configuration>
-                    <fork>true</fork>
-                    <mainClass>com.rmbcorp.law.Application</mainClass>
+                    <archive>
+                        <manifest>
+                            <Main-Class>com.rmbcorp.securitiesdemo.Application</Main-Class>
+                            <addClasspath>true</addClasspath>
+                        </manifest>
+                    </archive>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <mainClass>com.mkyong.core.App</mainClass>
+                            <classpathPrefix>dependency-jars/</classpathPrefix>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>2.8</version>
                 <executions>
                     <execution>
+                        <id>copy-dependencies</id>
+                        <phase>package</phase>
                         <goals>
-                            <goal>repackage</goal>
+                            <goal>copy-dependencies</goal>
                         </goals>
+                        <configuration>
+                            <outputDirectory>
+                                ${project.build.directory}/dependency-jars/
+                            </outputDirectory>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
         </plugins>
     </build>
-    <distributionManagement><!-- deploy -->
+
+    <distributionManagement>
         <snapshotRepository>
             <id>rmbCentral</id>
             <name>nexus-snapshots</name>
-            <url>${nexus.url}:${nexus.port}/repository/maven-snapshots</url>
+            <url>${nexus.url}:/repository/maven-snapshots</url>
         </snapshotRepository>
         <repository>
             <id>rmbCentral</id>
             <name>nexus-releases</name>
-            <url>${nexus.url}:${nexus.port}/repository/maven-releases</url>
+            <url>${nexus.url}/repository/maven-releases</url>
         </repository>
     </distributionManagement>
 </project>
