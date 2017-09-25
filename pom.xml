@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.rmbcorp</groupId>
+    <artifactId>law</artifactId>
+    <version>0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <properties>
+        <java.version>1.8</java.version>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <start-class>com.rmbcorp.law.Application</start-class>
+        <nexus.url>http://192.168.1.190</nexus.url>
+        <nexus.port>8081</nexus.port>
+        <nexus-staging-maven-plugin.version>1.6.7</nexus-staging-maven-plugin.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot</artifactId>
+            <version>1.5.7.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <version>1.4.2.RELEASE</version>
+        </dependency>
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>1.5.7.RELEASE</version>
+                <configuration>
+                    <fork>true</fork>
+                    <mainClass>com.rmbcorp.law.Application</mainClass>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+    <distributionManagement><!-- deploy -->
+        <snapshotRepository>
+            <id>rmbCentral</id>
+            <name>nexus-snapshots</name>
+            <url>${nexus.url}:${nexus.port}/repository/maven-snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>rmbCentral</id>
+            <name>nexus-releases</name>
+            <url>${nexus.url}:${nexus.port}/repository/maven-releases</url>
+        </repository>
+    </distributionManagement>
+</project>
